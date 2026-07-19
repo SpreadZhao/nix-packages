@@ -30,7 +30,7 @@
 
           package="$1"
           case "$package" in
-          bili23-downloader | cc-connect | docsify-cli | github-copilot-app | zcode) ;;
+          bili23-downloader | cc-connect | docsify-cli | github-copilot-app | nyxt4 | zcode) ;;
           *)
             echo "Unknown package: $package" >&2
             exit 2

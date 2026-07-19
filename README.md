@@ -14,6 +14,7 @@ not redistributed here.
 | `cc-connect` | 1.4.1 | [chenhg5/cc-connect](https://github.com/chenhg5/cc-connect) |
 | `docsify-cli` | 4.4.4 | [docsifyjs/docsify-cli](https://github.com/docsifyjs/docsify-cli) |
 | `github-copilot-app` | 1.0.22 | [github/app](https://github.com/github/app) |
+| `nyxt4` | 4.0.0 | [atlas-engineer/nyxt](https://github.com/atlas-engineer/nyxt) |
 | `zcode` | 3.3.5 | [ZCode](https://zcode.z.ai/en) |
 
 All package outputs currently target `x86_64-linux`.

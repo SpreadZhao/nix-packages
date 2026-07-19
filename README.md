@@ -55,10 +55,6 @@ nix run .#update -- cc-connect
 nix flake check
 ```
 
-The `Update package` GitHub workflow exposes the same five package choices and
-opens a pull request after validation. It has no schedule and never
-auto-merges.
-
 ## Development
 
 ```bash

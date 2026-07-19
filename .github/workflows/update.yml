@@ -1,0 +1,47 @@
+name: Update package
+
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        description: Package to update
+        required: true
+        type: choice
+        options:
+          - bili23-downloader
+          - cc-connect
+          - docsify-cli
+          - github-copilot-app
+          - zcode
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: update-${{ inputs.package }}
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Update package metadata
+        run: nix run .#update -- "${{ inputs.package }}"
+      - name: Validate repository
+        run: nix flake check --print-build-logs
+      - name: Open update pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: updates/${{ inputs.package }}
+          delete-branch: true
+          commit-message: "chore(packages): update ${{ inputs.package }}"
+          title: "chore(packages): update ${{ inputs.package }}"
+          body: |
+            Updates `${{ inputs.package }}` using its package update script.
+
+            The package and repository checks completed before this pull request was created.

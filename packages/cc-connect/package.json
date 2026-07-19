@@ -1,0 +1,8 @@
+{
+  "name": "nix-packages-cc-connect",
+  "version": "1.4.1",
+  "private": true,
+  "dependencies": {
+    "cc-connect": "1.4.1"
+  }
+}

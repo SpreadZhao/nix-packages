@@ -16,6 +16,7 @@ VERSION_PATTERN = r"[0-9]+(?:\.[0-9]+){2}(?:[-+][0-9A-Za-z.-]+)?"
 APPIMAGE_PATTERN = re.compile(
     r"https://cdn-zcode\.z\.ai/zcode/electron/releases/"
     rf"(?P<path_version>{VERSION_PATTERN})/"
+    r"(?:linux-x64/)?"
     rf"ZCode-(?P<file_version>{VERSION_PATTERN})-linux-x64\.AppImage"
 )
 
@@ -35,6 +36,21 @@ class DownloadLinkParser(HTMLParser):
         href = dict(attrs).get("href")
         if href is not None:
             self.hrefs.append(href)
+
+
+def version_key(version):
+    version_without_build = version.split("+", 1)[0]
+    release, separator, prerelease = version_without_build.partition("-")
+    release_key = tuple(int(part) for part in release.split("."))
+    prerelease_key = (
+        tuple(
+            (0, int(part), "") if part.isdigit() else (1, 0, part)
+            for part in prerelease.split(".")
+        )
+        if separator
+        else ()
+    )
+    return release_key, not separator, prerelease_key
 
 
 def release_from_page(page):
@@ -58,13 +74,7 @@ def release_from_page(page):
     if not releases:
         raise UpdateError("official release page contains no Linux x64 AppImage")
 
-    versions = sorted({version for version, _ in releases})
-    if len(versions) != 1:
-        raise UpdateError(
-            f"official release page contains multiple Linux x64 versions: {' '.join(versions)}"
-        )
-
-    return sorted(releases)[0]
+    return max(releases, key=lambda release: version_key(release[0]))
 
 
 def source_is_current(source, version, source_hash):

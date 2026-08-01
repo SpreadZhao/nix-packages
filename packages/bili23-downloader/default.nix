@@ -30,11 +30,11 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "bili23-downloader";
-  version = "2.10.4";
+  version = "2.11.0";
 
   src = fetchurl {
     url = "https://github.com/ScottSloan/Bili23-Downloader/releases/download/v${finalAttrs.version}/Bili23-Downloader_${finalAttrs.version}_linux_amd64_portable.tar.gz";
-    hash = "sha256-+MWn7hNwh5NAk23ASxh484ekLZTKNDcN1gS3DRn6YC0=";
+    hash = "sha256-R9xp2U1JT98rUQyapUedIgALRaXI5xAxtxwkuTwqUUw=";
   };
 
   sourceRoot = "Bili23-Downloader";

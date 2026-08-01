@@ -35,6 +35,7 @@ buildNpmPackage {
 
   nativeBuildInputs = [ makeWrapper ];
 
+  npmFlags = [ "--ignore-scripts" ];
   dontNpmBuild = true;
 
   postInstall = ''

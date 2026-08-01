@@ -7,10 +7,10 @@
 
 let
   pname = "github-copilot-app";
-  version = "1.0.22";
+  version = "1.1.2";
   src = fetchurl {
     url = "https://github.com/github/app/releases/download/v${version}/GitHub-Copilot-linux-x64.AppImage";
-    hash = "sha256-HgsvDy5nIu2bPFgSR7vPyfO6vHb3Vs6npI2hbMxNRAs=";
+    hash = "sha256-EKBbXoMGKaUJPA0s39XuxAtrl1CzjctDXHaofDXsiMo=";
   };
   appimageContents = appimageTools.extractType2 {
     inherit pname version src;

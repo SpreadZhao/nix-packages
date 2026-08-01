@@ -13,7 +13,7 @@ let
   sourceInfo = lib.importJSON ./source.json;
   inherit (sourceInfo) version;
   src = fetchurl {
-    url = "https://cdn-zcode.z.ai/zcode/electron/releases/${version}/ZCode-${version}-linux-x64.AppImage";
+    url = "https://cdn-zcode.z.ai/zcode/electron/releases/${version}/linux-x64/ZCode-${version}-linux-x64.AppImage";
     inherit (sourceInfo) hash;
   };
   appimageContents = appimageTools.extractType2 {

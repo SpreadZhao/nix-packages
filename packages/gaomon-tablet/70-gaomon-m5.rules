@@ -1,0 +1,5 @@
+# GAOMON M5 V2 (256c:200e)
+KERNEL=="uhid", GROUP="input", MODE="0660", TAG+="uaccess", OPTIONS+="static_node=uhid"
+KERNEL=="uinput", GROUP="input", MODE="0660", TAG+="uaccess", OPTIONS+="static_node=uinput"
+SUBSYSTEM=="usb", ATTR{idVendor}=="256c", ATTR{idProduct}=="200e", GROUP="input", MODE="0660", TAG+="uaccess"
+SUBSYSTEM=="hidraw", KERNEL=="hidraw*", ATTRS{idVendor}=="256c", ATTRS{idProduct}=="200e", GROUP="input", MODE="0660", TAG+="uaccess"

@@ -13,6 +13,7 @@ not redistributed here.
 | `bili23-downloader` | 2.10.4 | [ScottSloan/Bili23-Downloader](https://github.com/ScottSloan/Bili23-Downloader) |
 | `cc-connect` | 1.4.1 | [chenhg5/cc-connect](https://github.com/chenhg5/cc-connect) |
 | `docsify-cli` | 4.4.4 | [docsifyjs/docsify-cli](https://github.com/docsifyjs/docsify-cli) |
+| `gaomon-tablet` | 16.0.0.49 | [GAOMON M5 Linux driver](https://www.gaomon.cn/download/) |
 | `github-copilot-app` | 1.0.22 | [github/app](https://github.com/github/app) |
 | `nyxt4` | 4.0.0 | [atlas-engineer/nyxt](https://github.com/atlas-engineer/nyxt) |
 | `zcode` | 3.3.5 | [ZCode](https://zcode.z.ai/en) |

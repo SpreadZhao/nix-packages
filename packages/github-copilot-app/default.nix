@@ -12,7 +12,7 @@ let
     url = "https://github.com/github/app/releases/download/v${version}/GitHub-Copilot-linux-x64.AppImage";
     hash = "sha256-HgsvDy5nIu2bPFgSR7vPyfO6vHb3Vs6npI2hbMxNRAs=";
   };
-  appimageContents = appimageTools.extractType2 {
+  appimageContents = appimageTools.extract {
     inherit pname version src;
   };
 in

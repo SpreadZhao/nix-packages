@@ -16,7 +16,7 @@ let
     url = "https://cdn-zcode.z.ai/zcode/electron/releases/${version}/ZCode-${version}-linux-x64.AppImage";
     inherit (sourceInfo) hash;
   };
-  appimageContents = appimageTools.extractType2 {
+  appimageContents = appimageTools.extract {
     inherit pname version src;
   };
   updateScript = writeShellApplication {

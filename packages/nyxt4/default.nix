@@ -23,12 +23,12 @@ let
     install -Dm755 Nyxt-x86_64.AppImage "$out"
   '';
 
-  nyxtAppImage = appimageTools.extractType2 {
+  nyxtAppImage = appimageTools.extract {
     inherit pname version;
     src = nyxtAppImageFile;
   };
 
-  electronAppImage = appimageTools.extractType2 {
+  electronAppImage = appimageTools.extract {
     pname = "cl-electron-server";
     inherit version;
     src = "${nyxtAppImage}/usr/bin/cl-electron-server";

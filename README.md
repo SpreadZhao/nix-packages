@@ -16,6 +16,7 @@ not redistributed here.
 | `gaomon-tablet` | 16.0.0.49 | [GAOMON M5 Linux driver](https://www.gaomon.cn/download/) |
 | `github-copilot-app` | 1.0.22 | [github/app](https://github.com/github/app) |
 | `nyxt4` | 4.0.0 | [atlas-engineer/nyxt](https://github.com/atlas-engineer/nyxt) |
+| `opentypeless` | 1.1.57 | [tover0314-w/opentypeless](https://github.com/tover0314-w/opentypeless) |
 | `zcode` | 3.3.5 | [ZCode](https://zcode.z.ai/en) |
 
 All package outputs currently target `x86_64-linux`.

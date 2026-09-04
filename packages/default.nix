@@ -7,5 +7,6 @@
   gaomon-tablet = pkgs.callPackage ./gaomon-tablet { };
   github-copilot-app = pkgs.callPackage ./github-copilot-app { };
   nyxt4 = pkgs.callPackage ./nyxt4 { };
+  opentypeless = pkgs.callPackage ./opentypeless { };
   zcode = pkgs.callPackage ./zcode { };
 }

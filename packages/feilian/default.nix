@@ -58,6 +58,11 @@ let
   };
   fhsArgs = {
     inherit version;
+    # The host /opt may be root-only. Supply mount targets inside the FHS root
+    # so unprivileged launchers never need to create directories on the host.
+    extraBuildCommands = ''
+      mkdir -p "$out${appDir}"
+    '';
     targetPkgs =
       pkgs: with pkgs; [
         alsa-lib

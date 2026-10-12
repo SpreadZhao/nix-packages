@@ -30,7 +30,7 @@
 
           package="$1"
           case "$package" in
-          bili23-downloader | cc-connect | docsify-cli | github-copilot-app | nyxt4 | opentypeless | zcode) ;;
+          bili23-downloader | cc-connect | docsify-cli | feilian | github-copilot-app | nyxt4 | opentypeless | zcode) ;;
           *)
             echo "Unknown package: $package" >&2
             exit 2
@@ -59,9 +59,11 @@
           ''
             cp -R ${./packages/cc-connect} cc-connect
             cp -R ${./packages/docsify-cli} docsify-cli
+            cp -R ${./packages/feilian} feilian
             cp -R ${./packages/zcode} zcode
             python -m unittest discover -s cc-connect/tests -p "update_test.py"
             python -m unittest discover -s docsify-cli/tests -p "update_test.py"
+            python -m unittest discover -s feilian/tests -p "update_test.py"
             python -m unittest discover -s zcode/tests -p "update_test.py"
             touch "$out"
           '';
@@ -83,6 +85,8 @@
       packages.${system} = packageSet;
 
       overlays.default = overlay;
+
+      nixosModules.feilian = import ./modules/feilian.nix;
 
       apps.${system}.update = {
         type = "app";

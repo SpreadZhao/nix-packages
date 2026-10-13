@@ -9,5 +9,6 @@
   github-copilot-app = pkgs.callPackage ./github-copilot-app { };
   nyxt4 = pkgs.callPackage ./nyxt4 { };
   opentypeless = pkgs.callPackage ./opentypeless { };
+  shmooz = pkgs.callPackage ./shmooz { };
   zcode = pkgs.callPackage ./zcode { };
 }

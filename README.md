@@ -16,6 +16,7 @@ not redistributed here.
 | `feilian` | 3.2.16 | [FeiLian official download](https://www.volcengine.com/product/feilian/download) |
 | `gaomon-tablet` | 16.0.0.49 | [GAOMON M5 Linux driver](https://www.gaomon.cn/download/) |
 | `github-copilot-app` | 1.0.22 | [github/app](https://github.com/github/app) |
+| `micyou-cli` | 2.1.1 | [MicYou-Dev/MicYou](https://github.com/MicYou-Dev/MicYou) |
 | `nyxt4` | 4.0.0 | [atlas-engineer/nyxt](https://github.com/atlas-engineer/nyxt) |
 | `opentypeless` | 1.1.57 | [tover0314-w/opentypeless](https://github.com/tover0314-w/opentypeless) |
 | `shmooz` | 0.3.0 | [chmouel/shmooz](https://github.com/chmouel/shmooz) |
@@ -78,6 +79,41 @@ page's production release feed, selects the Linux AMD64 deb, verifies its
 version, and refreshes `source.json` only after the download hash succeeds.
 It fails explicitly if the upstream page format changes. Package builds and
 configuration evaluation do not contact the release feed.
+
+### MicYou CLI
+
+`micyou-cli` installs only the standalone command-line server from the upstream
+Linux release, with the ALSA configuration and runtime tools needed for PipeWire
+and Android USB connections. It does not install the GUI, TUI, desktop entries,
+GTK/WebKit or the unused ONNX Runtime library.
+
+Install the matching [Android APK](https://github.com/MicYou-Dev/MicYou/releases/download/v2.1.1/MicYou-Android-2.1.1.apk)
+on the phone, then use either transport:
+
+```bash
+micyou-cli serve --mode usb
+micyou-cli serve --mode wifi
+```
+
+USB requires a data cable, Android USB debugging and authorization of the host.
+Wi-Fi requires a reachable LAN address. The default native ports in 2.1.1 are
+TCP 8554 and UDP 8555; mDNS discovery uses UDP 5353. Open those ports in the host
+firewall when using Wi-Fi. Browser mode (`--mode web`) uses TCP 8443.
+
+The CLI creates `MicYouVirtualMic` in the current user's PipeWire session and
+temporarily selects it as the default input. Select it in the calling or recording
+application. Stop the server with Ctrl+C to clean up the virtual device and restore
+the previous input. A system-wide daemon is not required.
+
+```bash
+micyou-cli mics
+micyou-cli server get
+micyou-cli --help
+```
+
+Update with `nix run .#update -- micyou-cli`. If upstream changes its license,
+refresh `licenseFile.hash` as well. Recheck the Android version link, runtime
+resource layout and default ports when upgrading.
 
 ## Update
 

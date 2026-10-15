@@ -7,6 +7,7 @@
   feilian = pkgs.callPackage ./feilian { };
   gaomon-tablet = pkgs.callPackage ./gaomon-tablet { };
   github-copilot-app = pkgs.callPackage ./github-copilot-app { };
+  micyou-cli = pkgs.callPackage ./micyou-cli { };
   nyxt4 = pkgs.callPackage ./nyxt4 { };
   opentypeless = pkgs.callPackage ./opentypeless { };
   shmooz = pkgs.callPackage ./shmooz { };

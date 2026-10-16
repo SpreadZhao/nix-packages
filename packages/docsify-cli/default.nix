@@ -3,24 +3,10 @@
   buildNpmPackage,
   importNpmLock,
   makeWrapper,
-  nodejs,
-  python3,
-  writeShellApplication,
 }:
 
 let
   package = lib.importJSON ./package.json;
-  updateScript = writeShellApplication {
-    name = "update-docsify-cli";
-    runtimeInputs = [
-      nodejs
-      python3
-    ];
-    text = ''
-      exec python3 ${./update.py} "$PWD/packages/docsify-cli"
-    '';
-    meta.mainProgram = "update-docsify-cli";
-  };
 in
 buildNpmPackage {
   pname = "docsify-cli";
@@ -42,8 +28,6 @@ buildNpmPackage {
     makeWrapper $out/lib/node_modules/nix-packages-docsify-cli/node_modules/docsify-cli/bin/docsify $out/bin/docsify \
       --set NO_UPDATE_NOTIFIER 1
   '';
-
-  passthru.updateScript = lib.getExe updateScript;
 
   meta = {
     description = "A magical documentation generator.";

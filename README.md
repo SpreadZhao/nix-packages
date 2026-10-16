@@ -74,11 +74,8 @@ It stores writable application files in `/var/lib/feilian`; package changes
 refresh shipped files while retaining generated configs, certificates and logs.
 Removing the module stops the service but keeps this state directory.
 
-Update with `nix run .#update -- feilian`. The updater discovers the official
-page's production release feed, selects the Linux AMD64 deb, verifies its
-version, and refreshes `source.json` only after the download hash succeeds.
-It fails explicitly if the upstream page format changes. Package builds and
-configuration evaluation do not contact the release feed.
+To upgrade FeiLian, edit the version, Linux AMD64 deb URL and download hash in
+`packages/feilian/source.json`, then build and validate the package locally.
 
 ### MicYou CLI
 
@@ -111,24 +108,35 @@ micyou-cli server get
 micyou-cli --help
 ```
 
-Update with `nix run .#update -- micyou-cli`. If upstream changes its license,
-refresh `licenseFile.hash` as well. Recheck the Android version link, runtime
-resource layout and default ports when upgrading.
+To upgrade MicYou CLI, edit `packages/micyou-cli/default.nix`. If upstream changes
+its license, refresh `licenseFile.hash` as well. Recheck the Android version link,
+runtime resource layout and default ports when upgrading.
 
 ## Update
 
-Updates are explicit and package-scoped. From a local checkout, run:
+Packages are maintained by editing their definitions directly. Set the desired
+version, source URL and fixed hashes in `packages/<name>/default.nix` or its
+`source.json`. For npm packages, update `package.json` and the corresponding
+`package-lock.json` together; keep cc-connect's version in `source.json` aligned
+with its npm metadata. Update the package table above when changing a version.
+
+From a local checkout, build the changed package and run the local checks:
 
 ```bash
-nix run .#update -- cc-connect
-nix flake check
+nix build --no-link --no-write-lock-file "path:$PWD#cc-connect"
+nix flake check --no-write-lock-file "path:$PWD"
 ```
+
+Review the diff, then commit and push the changes yourself. Consumers adopt the
+new package revision by updating their corresponding flake input separately.
 
 ## Development
 
 ```bash
-nix develop
-nix flake check
+nix develop --no-write-lock-file "path:$PWD"
+nixfmt flake.nix packages/cc-connect/default.nix
+git diff --check
+nix flake check --no-write-lock-file "path:$PWD"
 actionlint
 ```
 

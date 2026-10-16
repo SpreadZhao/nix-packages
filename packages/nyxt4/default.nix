@@ -3,7 +3,6 @@
   buildFHSEnv,
   fetchurl,
   lib,
-  nix-update-script,
   runCommand,
   writeShellScript,
   writeShellScriptBin,
@@ -77,10 +76,6 @@ buildFHSEnv (
 
     passthru = {
       src = releaseArchive;
-      updateScript = nix-update-script {
-        attrPath = "nyxt4";
-        extraArgs = [ "--flake" ];
-      };
     };
 
     meta = {

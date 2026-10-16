@@ -1,14 +1,10 @@
 {
   buildFHSEnv,
-  cacert,
   dpkg,
   fetchurl,
   lib,
-  nix,
-  python3,
   stdenvNoCC,
   symlinkJoin,
-  writeShellApplication,
   writeShellScript,
   writeShellScriptBin,
 }:
@@ -153,17 +149,6 @@ let
   userHelper = writeShellScriptBin "feilian-user-helper" ''
     exec ${lib.getExe guiEnv} --user-helper "$@"
   '';
-  updateScript = writeShellApplication {
-    name = "update-feilian";
-    runtimeInputs = [
-      nix
-      python3
-    ];
-    runtimeEnv.SSL_CERT_FILE = "${cacert}/etc/ssl/certs/ca-bundle.crt";
-    text = ''
-      exec python3 ${./update.py} "$PWD/packages/feilian"
-    '';
-  };
 in
 symlinkJoin {
   name = "${pname}-${version}";
@@ -183,7 +168,6 @@ symlinkJoin {
       serviceEnv
       version
       ;
-    updateScript = lib.getExe updateScript;
   };
   inherit meta;
 }

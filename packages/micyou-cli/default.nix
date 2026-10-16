@@ -10,7 +10,6 @@
   pipewire,
   pulseaudio,
   wireplumber,
-  nix-update-script,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -82,11 +81,6 @@ stdenv.mkDerivation (finalAttrs: {
     "$out/bin/micyou-cli" --version | grep -Fx 'micyou-cli ${finalAttrs.version}'
     runHook postInstallCheck
   '';
-
-  passthru.updateScript = nix-update-script {
-    attrPath = finalAttrs.pname;
-    extraArgs = [ "--flake" ];
-  };
 
   meta = {
     description = "Command-line server for using an Android phone as a microphone";

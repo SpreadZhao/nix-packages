@@ -2,7 +2,6 @@
   appimageTools,
   fetchurl,
   lib,
-  nix-update-script,
 }:
 
 let
@@ -21,10 +20,6 @@ appimageTools.wrapType2 {
 
   passthru = {
     inherit src;
-    updateScript = nix-update-script {
-      attrPath = pname;
-      extraArgs = [ "--flake" ];
-    };
   };
 
   extraInstallCommands = ''

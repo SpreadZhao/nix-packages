@@ -8,7 +8,6 @@
   gtk3,
   lib,
   libayatana-appindicator,
-  nix-update-script,
   openssl,
   patchelf,
   stdenv,
@@ -75,11 +74,6 @@ stdenv.mkDerivation (finalAttrs: {
       --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ libayatana-appindicator ]}
     )
   '';
-
-  passthru.updateScript = nix-update-script {
-    attrPath = "opentypeless";
-    extraArgs = [ "--flake" ];
-  };
 
   meta = {
     description = "Open-source AI dictation and speech-to-text desktop app";

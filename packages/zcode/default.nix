@@ -1,11 +1,7 @@
 {
   appimageTools,
-  cacert,
   fetchurl,
   lib,
-  nix,
-  python3,
-  writeShellApplication,
 }:
 
 let
@@ -19,25 +15,12 @@ let
   appimageContents = appimageTools.extract {
     inherit pname version src;
   };
-  updateScript = writeShellApplication {
-    name = "update-zcode";
-    runtimeInputs = [
-      nix
-      python3
-    ];
-    runtimeEnv.SSL_CERT_FILE = "${cacert}/etc/ssl/certs/ca-bundle.crt";
-    text = ''
-      exec python3 ${./update.py} "$PWD/packages/zcode"
-    '';
-    meta.mainProgram = "update-zcode";
-  };
 in
 appimageTools.wrapType2 {
   inherit pname version src;
 
   passthru = {
     inherit src;
-    updateScript = lib.getExe updateScript;
   };
 
   extraInstallCommands = ''

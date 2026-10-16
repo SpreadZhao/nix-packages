@@ -7,7 +7,6 @@
   libxkbcommon,
   wayland,
   wl-clipboard,
-  nix-update-script,
 }:
 
 rustPlatform.buildRustPackage (finalAttrs: {
@@ -37,11 +36,6 @@ rustPlatform.buildRustPackage (finalAttrs: {
     wrapProgram "$out/bin/shmooz" \
       --prefix PATH : ${lib.makeBinPath [ wl-clipboard ]}
   '';
-
-  passthru.updateScript = nix-update-script {
-    attrPath = "shmooz";
-    extraArgs = [ "--flake" ];
-  };
 
   meta = {
     description = "Zoom, annotate, capture screenshots, and pick colors on Wayland";

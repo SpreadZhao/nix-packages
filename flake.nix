@@ -45,7 +45,6 @@
 
       devShells.${system}.default = pkgs.mkShell {
         packages = [
-          pkgs.actionlint
           pkgs.git
           pkgs.nixfmt
         ];

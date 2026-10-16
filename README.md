@@ -137,7 +137,6 @@ nix develop --no-write-lock-file "path:$PWD"
 nixfmt flake.nix packages/cc-connect/default.nix
 git diff --check
 nix flake check --no-write-lock-file "path:$PWD"
-actionlint
 ```
 
 The packaging code is available under the MIT license. Each packaged

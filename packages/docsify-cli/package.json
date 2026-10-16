@@ -1,8 +1,8 @@
 {
   "name": "nix-packages-docsify-cli",
-  "version": "4.4.4",
+  "version": "5.0.0",
   "private": true,
   "dependencies": {
-    "docsify-cli": "4.4.4"
+    "docsify-cli": "5.0.0"
   }
 }

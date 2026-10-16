@@ -19,11 +19,11 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "opentypeless";
-  version = "1.1.57";
+  version = "1.1.61";
 
   src = fetchurl {
     url = "https://github.com/tover0314-w/opentypeless/releases/download/v${finalAttrs.version}/OpenTypeless_${finalAttrs.version}_amd64.deb";
-    hash = "sha256-J2j40vqSlbaNwnQxGKj3+LspXEEyChBQCbstvEHEmSI=";
+    hash = "sha256-MUQ61XATeUJ1i1oOmNktHO9h6mP3xpVXs8KN2ngtJDY=";
   };
 
   nativeBuildInputs = [

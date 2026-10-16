@@ -10,19 +10,22 @@ not redistributed here.
 
 | Attribute | Version | Upstream |
 | --- | --- | --- |
-| `bili23-downloader` | 2.10.4 | [ScottSloan/Bili23-Downloader](https://github.com/ScottSloan/Bili23-Downloader) |
-| `cc-connect` | 1.4.1 | [chenhg5/cc-connect](https://github.com/chenhg5/cc-connect) |
-| `docsify-cli` | 4.4.4 | [docsifyjs/docsify-cli](https://github.com/docsifyjs/docsify-cli) |
+| `bili23-downloader` | 2.20.0 | [ScottSloan/Bili23-Downloader](https://github.com/ScottSloan/Bili23-Downloader) |
+| `cc-connect` | 1.5.0 | [chenhg5/cc-connect](https://github.com/chenhg5/cc-connect) |
+| `docsify-cli` | 5.0.0 | [docsifyjs/docsify-cli](https://github.com/docsifyjs/docsify-cli) |
 | `feilian` | 3.2.16 | [FeiLian official download](https://www.volcengine.com/product/feilian/download) |
 | `gaomon-tablet` | 16.0.0.49 | [GAOMON M5 Linux driver](https://www.gaomon.cn/download/) |
-| `github-copilot-app` | 1.0.22 | [github/app](https://github.com/github/app) |
+| `github-copilot-app` | 1.1.29 | [github/app](https://github.com/github/app) |
 | `micyou-cli` | 2.1.1 | [MicYou-Dev/MicYou](https://github.com/MicYou-Dev/MicYou) |
 | `nyxt4` | 4.0.0 | [atlas-engineer/nyxt](https://github.com/atlas-engineer/nyxt) |
-| `opentypeless` | 1.1.57 | [tover0314-w/opentypeless](https://github.com/tover0314-w/opentypeless) |
+| `opentypeless` | 1.1.61 | [tover0314-w/opentypeless](https://github.com/tover0314-w/opentypeless) |
 | `shmooz` | 0.3.0 | [chmouel/shmooz](https://github.com/chmouel/shmooz) |
-| `zcode` | 3.3.5 | [ZCode](https://zcode.z.ai/en) |
+| `zcode` | 3.15.3 | [ZCode](https://zcode.z.ai/en) |
 
 All package outputs currently target `x86_64-linux`.
+
+Bili23 2.20.0 resets previously configured download naming rules; configure them
+again after upgrading. docsify-cli 5 now uses docsify 5 for generated sites.
 
 ## Use
 

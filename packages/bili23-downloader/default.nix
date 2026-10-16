@@ -29,11 +29,18 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "bili23-downloader";
-  version = "2.10.4";
+  version = "2.20.0";
 
   src = fetchurl {
     url = "https://github.com/ScottSloan/Bili23-Downloader/releases/download/v${finalAttrs.version}/Bili23-Downloader_${finalAttrs.version}_linux_amd64_portable.tar.gz";
-    hash = "sha256-+MWn7hNwh5NAk23ASxh484ekLZTKNDcN1gS3DRn6YC0=";
+    hash = "sha256-ZfjcVoX8JPMVsbamXgqJzsZq6lCGCV7QpImnu1Z/xp8=";
+  };
+
+  # The portable release embeds its icons in Qt resources. Fetch the desktop
+  # icon from the matching upstream tag instead of the removed script path.
+  desktopIcon = fetchurl {
+    url = "https://raw.githubusercontent.com/ScottSloan/Bili23-Downloader/v${finalAttrs.version}/assets/app.svg";
+    hash = "sha256-fsvds5q/pZd0rpEx1mz1xyQ2tk4H6g1fwnl63K80nnk=";
   };
 
   sourceRoot = "Bili23-Downloader";
@@ -94,16 +101,20 @@ stdenv.mkDerivation (finalAttrs: {
     mkdir -p "$out/opt/bili23-downloader" "$out/bin"
     cp -R . "$out/opt/bili23-downloader/"
     chmod -R u+w "$out/opt/bili23-downloader"
+    # These unused plugins have dependencies omitted from the portable release.
+    # In particular, mixing Nix's newer Qt keyboard libraries with bundled Qt
+    # fails at runtime because their symbol versions differ.
     rm -f \
       "$out/opt/bili23-downloader/runtime/lib/python3.13/site-packages/PySide6/Qt/plugins/platformthemes/libqgtk3.so" \
-      "$out/opt/bili23-downloader/runtime/lib/python3.13/site-packages/PySide6/Qt/plugins/imageformats/libqpdf.so"
+      "$out/opt/bili23-downloader/runtime/lib/python3.13/site-packages/PySide6/Qt/plugins/imageformats/libqpdf.so" \
+      "$out/opt/bili23-downloader/runtime/lib/python3.13/site-packages/PySide6/Qt/plugins/platforminputcontexts/libqtvirtualkeyboardplugin.so"
     chmod +x "$out/opt/bili23-downloader/bili23-downloader"
     chmod +x "$out/opt/bili23-downloader/bundle/ffmpeg"
 
     makeWrapper "$out/opt/bili23-downloader/bili23-downloader" "$out/bin/bili23-downloader" \
       --chdir "$out/opt/bili23-downloader"
 
-    install -Dm444 "$out/opt/bili23-downloader/script/res/icon/app.svg" \
+    install -Dm444 "$desktopIcon" \
       "$out/share/icons/hicolor/scalable/apps/bili23-downloader.svg"
 
     runHook postInstall

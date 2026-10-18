@@ -31,6 +31,8 @@
           '';
     in
     {
+      lib.mkJetBrainsIde = import ./lib/jetbrains.nix;
+
       packages.${system} = packageSet;
 
       overlays.default = overlay;
@@ -39,6 +41,10 @@
 
       checks.${system} = packageSet // {
         formatting = formattingCheck;
+        jetbrains-wrapper = import ./tests/jetbrains.nix {
+          inherit pkgs;
+          mkJetBrainsIde = self.lib.mkJetBrainsIde;
+        };
       };
 
       formatter.${system} = pkgs.nixfmt;

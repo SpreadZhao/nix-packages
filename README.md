@@ -55,6 +55,35 @@ home.packages = [
 An optional overlay is also exported as
 `inputs.personal-packages.overlays.default`.
 
+### JetBrains IDE wrappers
+
+`lib.mkJetBrainsIde` adds declaratively selected plugins to an existing Nixpkgs
+IDE without repackaging its distribution or replacing its runtime environment:
+
+```nix
+inputs.personal-packages.lib.mkJetBrainsIde {
+  inherit pkgs;
+  package = pkgs.android-studio;
+  plugins = [ /* plugin derivations, including standalone JARs */ ];
+  propertiesEnv = "STUDIO_PROPERTIES";
+  extraProperties."idea.config.path" = "/home/user/.config/jetbrains/android-studio";
+  runtimePackages = [ ];
+  environment = { }; # Optional environment variables scoped to this IDE.
+}
+```
+
+Use `IDEA_PROPERTIES` for IntelliJ IDEA and `CLION_PROPERTIES` for CLion.
+`plugins` must contain plugin derivations compatible with the chosen IDE;
+the caller owns plugin selection and version pinning. The wrapper sets
+`idea.plugins.path` to an immutable directory and preserves the upstream
+desktop entries, arguments, and launch environment. Other platform properties
+can be set through `extraProperties`; `runtimePackages` adds tools to the
+launcher's PATH. `environment` sets variables only for the launched IDE.
+The result exposes `package`, `plugins`, `pluginDirectory`,
+and `properties` through passthru. Update these plugins through Nix, not the
+IDE's plugin manager. `checks.x86_64-linux.jetbrains-wrapper` validates both
+plugin layouts and argument/environment forwarding.
+
 ### FeiLian
 
 FeiLian needs its root daemon and NetworkManager. Import the module on the

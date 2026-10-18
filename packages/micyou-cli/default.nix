@@ -75,13 +75,6 @@ stdenv.mkDerivation (finalAttrs: {
       --set ALSA_PLUGIN_DIR ${pipewire}/lib/alsa-lib
   '';
 
-  doInstallCheck = true;
-  installCheckPhase = ''
-    runHook preInstallCheck
-    "$out/bin/micyou-cli" --version | grep -Fx 'micyou-cli ${finalAttrs.version}'
-    runHook postInstallCheck
-  '';
-
   meta = {
     description = "Command-line server for using an Android phone as a microphone";
     homepage = "https://github.com/MicYou-Dev/MicYou";

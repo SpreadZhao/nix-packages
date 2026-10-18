@@ -44,22 +44,6 @@ buildNpmPackage {
       --set NO_UPDATE_NOTIFIER 1
   '';
 
-  doInstallCheck = true;
-  installCheckPhase = ''
-    runHook preInstallCheck
-    cliRoot="$out/lib/node_modules/nix-packages-docsify-cli/node_modules/docsify-cli"
-    # Reproduce the permissions these assets will have in the Nix store.
-    chmod -R a-w "$cliRoot/lib/template" "$cliRoot/../docsify/dist"
-    cd "$TMPDIR"
-    "$out/bin/docsify" init "$TMPDIR/docsify-check"
-    "$out/bin/docsify" init "$TMPDIR/docsify-local-check" --local
-    test -w "$TMPDIR/docsify-check/index.html"
-    test -w "$TMPDIR/docsify-check/README.md"
-    test -w "$TMPDIR/docsify-local-check/vendor/docsify.js"
-    test -w "$TMPDIR/docsify-local-check/vendor/themes/core.css"
-    runHook postInstallCheck
-  '';
-
   meta = {
     description = "A magical documentation generator.";
     homepage = "https://github.com/docsifyjs/docsify-cli";

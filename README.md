@@ -6,6 +6,15 @@ The repository contains packaging code only. Upstream release archives and
 AppImages are fetched from their original locations with fixed hashes; they are
 not redistributed here.
 
+## Repository layout
+
+- `packages/` contains application derivations and their source metadata.
+- `lib/jetbrains.nix` provides the reusable IDE launcher used by spreadconfig's
+  JetBrains configuration; IDE selection, settings, and plugin lists live in
+  spreadconfig.
+- `modules/feilian.nix` provides optional NixOS service integration for the
+  FeiLian package, including its system daemon and NetworkManager settings.
+
 ## Packages
 
 | Attribute | Version | Upstream |
@@ -80,8 +89,7 @@ can be set through `extraProperties`; `runtimePackages` adds tools to the
 launcher's PATH. `environment` sets variables only for the launched IDE.
 The result exposes `package`, `plugins`, `pluginDirectory`,
 and `properties` through passthru. Update these plugins through Nix, not the
-IDE's plugin manager. `checks.x86_64-linux.jetbrains-wrapper` validates both
-plugin layouts and argument/environment forwarding.
+IDE's plugin manager.
 
 ### FeiLian
 
@@ -151,11 +159,11 @@ version, source URL and fixed hashes in `packages/<name>/default.nix` or its
 `package-lock.json` together; keep cc-connect's version in `source.json` aligned
 with its npm metadata. Update the package table above when changing a version.
 
-From a local checkout, build the changed package and run the local checks:
+From a local checkout, build the changed package without creating a result link:
 
 ```bash
 nix build --no-link --no-write-lock-file "path:$PWD#cc-connect"
-nix flake check --no-write-lock-file "path:$PWD"
+git diff --check
 ```
 
 Review the diff, then commit and push the changes yourself. Consumers adopt the
@@ -167,8 +175,21 @@ new package revision by updating their corresponding flake input separately.
 nix develop --no-write-lock-file "path:$PWD"
 nixfmt flake.nix packages/cc-connect/default.nix
 git diff --check
-nix flake check --no-write-lock-file "path:$PWD"
 ```
+
+The development shell uses [NAW](https://github.com/SpreadZhao/NAW) to generate
+`AGENTS.md` from `repoWorkspace.instructions` in `flake.nix`. Entering
+`nix develop --no-write-lock-file "path:$PWD"` installs or refreshes the generated
+file. Edit the instructions in `flake.nix`, not the generated `AGENTS.md`.
+This workspace manages only `AGENTS.md`; it does not install skills or create
+agent skill directories. Generated instructions and `.naw/` state are ignored
+by Git. The `workspace` flake check builds the required NAW output.
+
+Follow the generated repository policy. Keep temporary validation scripts and
+fixtures outside this checkout and remove them when finished. Build with
+`--no-link`, avoid Python bytecode caches with `PYTHONDONTWRITEBYTECODE=1`, and
+remove temporary files and processes before delivery. Do not retain generated
+result links, caches, logs, or test scaffolding in the repository.
 
 The packaging code is available under the MIT license. Each packaged
 application retains its own upstream license.

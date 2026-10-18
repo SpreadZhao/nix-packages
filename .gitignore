@@ -1,5 +1,9 @@
-/result
-/result-*
-/.direnv
+result
+result-*
+.direnv/
+.naw/
+/AGENTS.md
 __pycache__/
 *.pyc
+*.pyo
+.pytest_cache/

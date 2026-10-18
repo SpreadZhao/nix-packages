@@ -15,7 +15,6 @@ not redistributed here.
 | `docsify-cli` | 5.0.0 | [docsifyjs/docsify-cli](https://github.com/docsifyjs/docsify-cli) |
 | `feilian` | 3.2.16 | [FeiLian official download](https://www.volcengine.com/product/feilian/download) |
 | `gaomon-tablet` | 16.0.0.49 | [GAOMON M5 Linux driver](https://www.gaomon.cn/download/) |
-| `github-copilot-app` | 1.1.29 | [github/app](https://github.com/github/app) |
 | `micyou-cli` | 2.1.1 | [MicYou-Dev/MicYou](https://github.com/MicYou-Dev/MicYou) |
 | `nyxt4` | 4.0.0 | [atlas-engineer/nyxt](https://github.com/atlas-engineer/nyxt) |
 | `opentypeless` | 1.1.61 | [tover0314-w/opentypeless](https://github.com/tover0314-w/opentypeless) |

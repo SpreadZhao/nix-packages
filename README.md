@@ -27,6 +27,7 @@ not redistributed here.
 | `micyou-cli` | 2.1.1 | [MicYou-Dev/MicYou](https://github.com/MicYou-Dev/MicYou) |
 | `nyxt4` | 4.0.0 | [atlas-engineer/nyxt](https://github.com/atlas-engineer/nyxt) |
 | `opentypeless` | 1.1.61 | [tover0314-w/opentypeless](https://github.com/tover0314-w/opentypeless) |
+| `psst-auth` | 0.2.0 (2026-06-22 snapshot) | [phisch/psst](https://github.com/phisch/psst) |
 | `shmooz` | 0.3.0 | [chmouel/shmooz](https://github.com/chmouel/shmooz) |
 | `zcode` | 3.15.3 | [ZCode](https://zcode.z.ai/en) |
 

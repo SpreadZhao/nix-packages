@@ -9,6 +9,7 @@
   micyou-cli = pkgs.callPackage ./micyou-cli { };
   nyxt4 = pkgs.callPackage ./nyxt4 { };
   opentypeless = pkgs.callPackage ./opentypeless { };
+  psst-auth = pkgs.callPackage ./psst-auth { };
   shmooz = pkgs.callPackage ./shmooz { };
   zcode = pkgs.callPackage ./zcode { };
 }

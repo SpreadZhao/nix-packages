@@ -137,11 +137,33 @@ let
       '';
     }
   );
+  # corplink-service runs as root, so bypass /run/wrappers/bin/sudo to avoid
+  # invoking host PAM inside the FHS mount namespace during hardware checks.
+  rootSudo = writeShellScriptBin "sudo" ''
+    while [[ "''${1:-}" == -* ]]; do
+      [[ "$1" == "--" ]] && { shift; break; }
+      shift
+    done
+    exec "$@"
+  '';
   serviceEnv = buildFHSEnv (
     fhsArgs
     // {
       pname = "feilian-service";
-      runScript = "${appDir}/corplink-service";
+      targetPkgs =
+        pkgs:
+        fhsArgs.targetPkgs pkgs
+        ++ (with pkgs; [
+          dmidecode
+          gawk
+          gnugrep
+          pciutils
+          rootSudo
+        ]);
+      runScript = writeShellScript "feilian-service-launch" ''
+        export PATH="/usr/bin:/usr/sbin:$PATH"
+        exec ${appDir}/corplink-service "$@"
+      '';
       # The root daemon configures the host VPN interface and starts helpers.
       extraBwrapArgs = fhsArgs.extraBwrapArgs ++ [ "--cap-add ALL" ];
     }

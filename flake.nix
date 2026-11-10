@@ -19,8 +19,6 @@
         inherit system;
         config.allowUnfree = true;
       };
-      packageSet = import ./packages { inherit pkgs; };
-      overlay = final: _: import ./packages { pkgs = final; };
       repoWorkspace = naw.lib.mkWorkspace {
         systems = [ system ];
         skills = { };
@@ -29,10 +27,7 @@
         instructions = ''
           # Repository scope
 
-          - `packages/` contains application derivations and their required source metadata.
-          - `lib/` contains reusable packaging helpers. `lib/jetbrains.nix` is consumed by
-            spreadconfig's JetBrains configuration; preserve its exported API unless all
-            consumers are updated together.
+          - `packages/` contains application derivations and source metadata.
           - `modules/` contains optional NixOS integration. FeiLian's module configures its
             system service and networking; its application derivation remains in
             `packages/feilian/`.
@@ -57,19 +52,15 @@
 
           ## Validation
 
-          - Format changed Nix files and run `git diff --check`.
-          - Use `nix build --no-link --no-write-lock-file "path:$PWD#<package>"` for package
-            builds. Do not create `result`, `result-1`, or other build-output symlinks in
-            the checkout.
-          - Run temporary validation from an isolated directory outside the repository,
-            and set `PYTHONDONTWRITEBYTECODE=1` when using Python. Remove that directory
-            and any temporary processes before finishing.
-          - Do not introduce repository-local test suites, fixtures, custom test phases,
-            test-only flake checks, or CI scaffolding unless the user asks to retain them.
-          - Upstream build flags and runtime dependencies are not disposable validation
-            artifacts; preserve them when they are required to build or run a package.
-          - Review ignored as well as tracked files before delivery. Ignoring generated
-            files prevents accidental commits but does not replace cleaning them up.
+          - Format changed Nix files with `nixfmt` and run `git diff --check`.
+          - Build packages with `nix build --no-link --no-write-lock-file "path:$PWD#<package>"`.
+            Do not create `result`, `result-1`, or other build-output symlinks in the checkout.
+          - Set `PYTHONDONTWRITEBYTECODE=1` when running Python during temporary validation.
+          - Do not introduce custom test phases, test-only flake checks, or CI scaffolding
+            unless the user asks to retain them. Preserve upstream build flags and runtime
+            dependencies required to build or run a package.
+          - Check ignored as well as tracked files before finishing; `.gitignore` prevents
+            accidental commits, not leftover files in the working tree.
         '';
         packages = pkgs: [
           pkgs.git
@@ -78,11 +69,9 @@
       };
     in
     {
-      lib.mkJetBrainsIde = import ./lib/jetbrains.nix;
+      packages.${system} = import ./packages { inherit pkgs; };
 
-      packages.${system} = packageSet;
-
-      overlays.default = overlay;
+      overlays.default = final: _: import ./packages { pkgs = final; };
 
       nixosModules.feilian = import ./modules/feilian.nix;
 

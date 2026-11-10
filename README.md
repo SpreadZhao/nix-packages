@@ -2,39 +2,27 @@
 
 Personal Nix package definitions maintained by SpreadZhao.
 
-The repository contains packaging code only. Upstream release archives and
-AppImages are fetched from their original locations with fixed hashes; they are
-not redistributed here.
-
-## Repository layout
-
-- `packages/` contains application derivations and their source metadata.
-- `lib/jetbrains.nix` provides the reusable IDE launcher used by spreadconfig's
-  JetBrains configuration; IDE selection, settings, and plugin lists live in
-  spreadconfig.
-- `modules/feilian.nix` provides optional NixOS service integration for the
-  FeiLian package, including its system daemon and NetworkManager settings.
+`packages/` contains application derivations and source metadata, and
+`modules/feilian.nix` provides optional NixOS service integration for FeiLian.
+Derivations fetch upstream sources and release archives from their original URLs
+with fixed hashes; binaries are not redistributed here.
 
 ## Packages
 
 | Attribute | Version | Upstream |
 | --- | --- | --- |
 | `bili23-downloader` | 2.20.0 | [ScottSloan/Bili23-Downloader](https://github.com/ScottSloan/Bili23-Downloader) |
-| `cc-connect` | 1.5.0 | [chenhg5/cc-connect](https://github.com/chenhg5/cc-connect) |
-| `docsify-cli` | 5.0.0 | [docsifyjs/docsify-cli](https://github.com/docsifyjs/docsify-cli) |
 | `feilian` | 3.2.16 | [FeiLian official download](https://www.volcengine.com/product/feilian/download) |
-| `gaomon-tablet` | 16.0.0.49 | [GAOMON M5 Linux driver](https://www.gaomon.cn/download/) |
 | `micyou-cli` | 2.1.1 | [MicYou-Dev/MicYou](https://github.com/MicYou-Dev/MicYou) |
 | `nyxt4` | 4.0.0 | [atlas-engineer/nyxt](https://github.com/atlas-engineer/nyxt) |
 | `opentypeless` | 1.1.61 | [tover0314-w/opentypeless](https://github.com/tover0314-w/opentypeless) |
 | `psst-auth` | 0.2.0 (2026-06-22 snapshot) | [phisch/psst](https://github.com/phisch/psst) |
 | `shmooz` | 0.3.0 | [chmouel/shmooz](https://github.com/chmouel/shmooz) |
-| `zcode` | 3.15.3 | [ZCode](https://zcode.z.ai/en) |
 
-All package outputs currently target `x86_64-linux`.
+All package outputs target `x86_64-linux`.
 
 Bili23 2.20.0 resets previously configured download naming rules; configure them
-again after upgrading. docsify-cli 5 now uses docsify 5 for generated sites.
+again after upgrading.
 
 ## Use
 
@@ -57,40 +45,11 @@ Then install a package without applying an overlay:
 
 ```nix
 home.packages = [
-  inputs.personal-packages.packages.${pkgs.stdenv.hostPlatform.system}.cc-connect
+  inputs.personal-packages.packages.${pkgs.stdenv.hostPlatform.system}.bili23-downloader
 ];
 ```
 
-An optional overlay is also exported as
-`inputs.personal-packages.overlays.default`.
-
-### JetBrains IDE wrappers
-
-`lib.mkJetBrainsIde` adds declaratively selected plugins to an existing Nixpkgs
-IDE without repackaging its distribution or replacing its runtime environment:
-
-```nix
-inputs.personal-packages.lib.mkJetBrainsIde {
-  inherit pkgs;
-  package = pkgs.android-studio;
-  plugins = [ /* plugin derivations, including standalone JARs */ ];
-  propertiesEnv = "STUDIO_PROPERTIES";
-  extraProperties."idea.config.path" = "/home/user/.config/jetbrains/android-studio";
-  runtimePackages = [ ];
-  environment = { }; # Optional environment variables scoped to this IDE.
-}
-```
-
-Use `IDEA_PROPERTIES` for IntelliJ IDEA and `CLION_PROPERTIES` for CLion.
-`plugins` must contain plugin derivations compatible with the chosen IDE;
-the caller owns plugin selection and version pinning. The wrapper sets
-`idea.plugins.path` to an immutable directory and preserves the upstream
-desktop entries, arguments, and launch environment. Other platform properties
-can be set through `extraProperties`; `runtimePackages` adds tools to the
-launcher's PATH. `environment` sets variables only for the launched IDE.
-The result exposes `package`, `plugins`, `pluginDirectory`,
-and `properties` through passthru. Update these plugins through Nix, not the
-IDE's plugin manager.
+The flake also exports `inputs.personal-packages.overlays.default`.
 
 ### FeiLian
 
@@ -114,8 +73,8 @@ It stores writable application files in `/var/lib/feilian`; package changes
 refresh shipped files while retaining generated configs, certificates and logs.
 Removing the module stops the service but keeps this state directory.
 
-To upgrade FeiLian, edit the version, Linux AMD64 deb URL and download hash in
-`packages/feilian/source.json`, then build and validate the package locally.
+To upgrade FeiLian, update the version, Linux AMD64 deb URL and download hash in
+`packages/feilian/source.json`.
 
 ### MicYou CLI
 
@@ -154,43 +113,38 @@ runtime resource layout and default ports when upgrading.
 
 ## Update
 
-Packages are maintained by editing their definitions directly. Set the desired
-version, source URL and fixed hashes in `packages/<name>/default.nix` or its
-`source.json`. For npm packages, update `package.json` and the corresponding
-`package-lock.json` together; keep cc-connect's version in `source.json` aligned
-with its npm metadata. Update the package table above when changing a version.
+Set the version, source URL and fixed hashes in `packages/<name>/default.nix` or
+`packages/<name>/source.json`, and update the package table above when changing
+a version.
 
 From a local checkout, build the changed package without creating a result link:
 
 ```bash
-nix build --no-link --no-write-lock-file "path:$PWD#cc-connect"
+nix build --no-link --no-write-lock-file "path:$PWD#bili23-downloader"
 git diff --check
 ```
 
 Review the diff, then commit and push the changes yourself. Consumers adopt the
-new package revision by updating their corresponding flake input separately.
+new package revision by updating their flake input separately.
 
 ## Development
 
 ```bash
 nix develop --no-write-lock-file "path:$PWD"
-nixfmt flake.nix packages/cc-connect/default.nix
+nixfmt flake.nix packages/bili23-downloader/default.nix
 git diff --check
 ```
 
-The development shell uses [NAW](https://github.com/SpreadZhao/NAW) to generate
-`AGENTS.md` from `repoWorkspace.instructions` in `flake.nix`. Entering
-`nix develop --no-write-lock-file "path:$PWD"` installs or refreshes the generated
-file. Edit the instructions in `flake.nix`, not the generated `AGENTS.md`.
-This workspace manages only `AGENTS.md`; it does not install skills or create
-agent skill directories. Generated instructions and `.naw/` state are ignored
-by Git. The `workspace` flake check builds the required NAW output.
+Entering `nix develop --no-write-lock-file "path:$PWD"` uses
+[NAW](https://github.com/SpreadZhao/NAW) to generate `AGENTS.md` from
+`repoWorkspace.instructions` in `flake.nix` without installing agent skill
+directories. Edit `flake.nix` rather than `AGENTS.md`; Git ignores both
+`AGENTS.md` and `.naw/`, and the `workspace` flake check builds the NAW output.
 
-Follow the generated repository policy. Keep temporary validation scripts and
-fixtures outside this checkout and remove them when finished. Build with
-`--no-link`, avoid Python bytecode caches with `PYTHONDONTWRITEBYTECODE=1`, and
-remove temporary files and processes before delivery. Do not retain generated
-result links, caches, logs, or test scaffolding in the repository.
+Keep temporary validation scripts, fixtures, caches and logs outside this
+checkout, set `PYTHONDONTWRITEBYTECODE=1` when running Python, and remove
+temporary files and processes before finishing. Do not commit test scaffolding
+or leave `result*` links in the repository.
 
 The packaging code is available under the MIT license. Each packaged
 application retains its own upstream license.
